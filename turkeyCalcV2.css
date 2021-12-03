@@ -1,0 +1,76 @@
+table{
+    /* display: flex */
+    margin: auto;
+    letter-spacing: .2em;
+}
+
+h2{
+    font-size: 2em;
+    text-align: center;
+    text-decoration: underline;
+}
+
+th:nth-child(1){
+    font-size: 1.25em;
+    text-align: left;
+    padding: 5px;
+}
+
+th:nth-child(2){
+    font-size: 1.25em;
+    text-align: left;
+    padding: 5px;
+}
+
+td{
+    text-align: center;
+    padding: 5px;
+    margin: 5px;
+}
+
+#payout-nums th {
+    padding-left: 1em;
+    padding-right: 1em;
+    font-size: 1.25em;
+}
+
+#payout-nums td {
+    font-size: 1.25em;
+}
+
+h3{
+    text-align: center;
+    font-size: 1.5em;
+    margin: .25em;
+    letter-spacing: .2em;
+}
+h4{
+    text-align: center;
+    font-size: 1.5em;
+    color: green;
+    /* color: #ff0000; */
+    margin: .25em;
+    letter-spacing: .2em;
+}
+
+
+.negative{
+    text-align: center;
+    font-size: 1.5em;
+    color: red;
+    margin: .25em;
+    letter-spacing: .2em;
+}
+
+tbody td:nth-child(1){
+    text-align: left;
+    padding-right: 15px;
+}
+
+tbody td:nth-child(2){
+    text-align: right;
+    padding-left: 15px;
+}
+
+
+
