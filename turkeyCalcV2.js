@@ -144,7 +144,11 @@ function calcPayout(num){
     }
 
     if (num > 500){
-        
+        if (num > 500 && num < 750) { num = 500 } 
+        if (num > 750 && num < 1000) { num = 750 } 
+        if (num > 1000 && num < 1250) { num = 1000 } 
+        if (num > 1250 && num < 1500) { num = 1250 } 
+        // if (num > 500 && num < 750) { num = 500 } 
         firstPlacePayout.innerText = `$${roundToNearestHundred((500*10) + (num-500) * 5)}`;
         secondPlacePayout.innerText = `$${roundToNearestHundred((500*10) + (num-500) * 5)}`;
         thirdPlacePayout.innerText = `$${roundToNearestHundred((500*10) + (num-500) * 5)} `;
