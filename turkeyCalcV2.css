@@ -1,3 +1,7 @@
+body {
+    margin-bottom: 100px
+}
+
 table{
     /* display: flex */
     margin: auto;
@@ -5,7 +9,7 @@ table{
 }
 
 h2{
-    font-size: 2em;
+    font-size: 3em;
     text-align: center;
     text-decoration: underline;
 }
@@ -40,13 +44,13 @@ td{
 
 h3{
     text-align: center;
-    font-size: 1.5em;
+    font-size: 2em !important;
     margin: .25em;
     letter-spacing: .2em;
 }
 h4{
     text-align: center;
-    font-size: 1.5em;
+    font-size: 2.5em;
     color: green;
     /* color: #ff0000; */
     margin: .25em;
@@ -56,7 +60,7 @@ h4{
 
 .negative{
     text-align: center;
-    font-size: 1.5em;
+    font-size: 2em;
     color: red;
     margin: .25em;
     letter-spacing: .2em;
@@ -73,4 +77,10 @@ tbody td:nth-child(2){
 }
 
 
+tr {
+    font-size: 2em;
+}
 
+h3 {
+    font-size: 2.5em !important;
+}

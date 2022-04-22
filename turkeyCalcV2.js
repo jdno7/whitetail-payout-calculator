@@ -10,15 +10,23 @@ const ninthPlacePayout = document.querySelector('#top-ten tr:nth-child(9) td:nth
 const tenthPlacePayout = document.querySelector('#top-ten tr:nth-child(10) td:nth-child(2)')
 
 const twentyPlacePayout = document.querySelector('#on-the-tens tr td:nth-child(2)')
+const twentyPlace = document.getElementById('20th')
 const thirtyPlacePayout = document.querySelector('#on-the-tens tr:nth-child(2) td:nth-child(2)')
+const thirtyPlace = document.getElementById('30th')
 const fortyPlacePayout = document.querySelector('#on-the-tens tr:nth-child(3) td:nth-child(2)')
+const fortyPlace = document.getElementById('40th')
 const fiftyPlacePayout = document.querySelector('#on-the-tens tr:nth-child(4) td:nth-child(2)')
+const fiftyPlace = document.getElementById('50th')
 const sixtyPlacePayout = document.querySelector('#on-the-tens tr:nth-child(5) td:nth-child(2)')
+const sixtyPlace = document.getElementById('60th')
 const seventyPlacePayout = document.querySelector('#on-the-tens tr:nth-child(6) td:nth-child(2)')
+const seventyPlace = document.getElementById('70th')
 const eightyPlacePayout = document.querySelector('#on-the-tens tr:nth-child(7) td:nth-child(2)')
+const eightyPlace = document.getElementById('80th')
 const ninetyPlacePayout = document.querySelector('#on-the-tens tr:nth-child(8) td:nth-child(2)')
+const ninetyPlace = document.getElementById('90th')
 const hundredPlacePayout = document.querySelector('#on-the-tens tr:nth-child(9) td:nth-child(2)')
-
+const hundredPlace = document.getElementById('100th')
 const overSpursPayout = document.querySelector('#special-harvest tr td:nth-child(2)')
 const underSpursPayout = document.querySelector('#special-harvest tr:nth-child(2) td:nth-child(2)')
 const OverTwentyPayout = document.querySelector('#special-harvest tr:nth-child(3) td:nth-child(2)')
@@ -82,7 +90,7 @@ function calcHunterPayout(){
     tdsArr.shift();
     tdsArr.shift();
     const numsArr = tdsArr.forEach(function(td){
-     
+        
        payoutTotal += parseInt(td.innerText.replace('$',""));
     
     })
@@ -112,8 +120,95 @@ function roundToNearestHundred(num){
 
 
 function calcPayout(num){
+    // twentyPlace.style.display="table-row";
+    //     thirtyPlace.style.display="table-row";
+    //     fortyPlace.style.display="table-row";
+    //     fiftyPlace.style.display="table-row";
+    //     sixtyPlace.style.display="table-row";
+    //     seventyPlace.style.display="table-row";
+    //     eightyPlace.style.display="table-row";
+    //     ninetyPlace.style.display="table-row";
+    //     hundredPlace.style.display="table-row";
     num -= num % 10;
-    if (num <= 500){
+    if (num < 150){
+        // num -= num % 50;
+        firstPlacePayout.innerText = `$${roundToNearestHundred(num*10)}`;
+        secondPlacePayout.innerText = `$${roundToNearestHundred(num*10)}`;
+        thirdPlacePayout.innerText = `$${roundToNearestHundred(num*10)}`;
+        fourthPlacePayout.innerText = `$${roundToNearestHundred(num*10)}`;
+        fifthPlacePayout.innerText = `$${roundToNearestHundred(num*10)}`;
+        sixthPlacePayout.innerText = `$${roundToNearestHundred(num*7.5)}`;
+        seventhPlacePayout.innerText = `$${roundToNearestHundred(num*7.5)}`;
+        eighthPlacePayout.innerText = `$${roundToNearestHundred(num*7.5)}`;
+        ninthPlacePayout.innerText = `$${roundToNearestHundred(num*7.5)}`;
+        tenthPlacePayout.innerText = `$${roundToNearestHundred(num*7.5)}`;
+
+        twentyPlacePayout.innerText = `$${0}`; 
+        thirtyPlacePayout.innerText = `$${0}`; 
+        fortyPlacePayout.innerText = `$${0}`; 
+        fiftyPlacePayout.innerText = `$${0}`; 
+        sixtyPlacePayout.innerText = `$${0}`;
+        seventyPlacePayout.innerText = `$${0}`;
+        eightyPlacePayout.innerText = `$${0}`; 
+        ninetyPlacePayout.innerText = `$${0}`; 
+        hundredPlacePayout.innerText = `$${0}`;
+
+        // twentyPlace.style.display="none";
+        // thirtyPlace.style.display="none";
+        // fortyPlace.style.display="none";
+        // fiftyPlace.style.display="none";
+        // sixtyPlace.style.display="none";
+        // seventyPlace.style.display="none";
+        // eightyPlace.style.display="none";
+        // ninetyPlace.style.display="none";
+        // hundredPlace.style.display="none";
+       
+
+        overSpursPayout.innerText = `$${roundToNearestHundred(num*4)}`; 
+        underSpursPayout.innerText = `$${roundToNearestHundred(num*4)}`; 
+        OverTwentyPayout.innerText = `$${roundToNearestHundred(num*4)}`; 
+        underTwentyPayout.innerText = `$${roundToNearestHundred(num*4)}`;
+        overTenPayout.innerText = `$${roundToNearestHundred(num*4)}`;
+        underTenPayout.innerText = `$${roundToNearestHundred(num*4)}`;
+    }
+    else if (num < 250){
+        // num -= num % 50;
+        firstPlacePayout.innerText = `$${roundToNearestHundred(num*10)}`;
+        secondPlacePayout.innerText = `$${roundToNearestHundred(num*10)}`;
+        thirdPlacePayout.innerText = `$${roundToNearestHundred(num*10)}`;
+        fourthPlacePayout.innerText = `$${roundToNearestHundred(num*10)}`;
+        fifthPlacePayout.innerText = `$${roundToNearestHundred(num*10)}`;
+        sixthPlacePayout.innerText = `$${roundToNearestHundred(num*7.5)}`;
+        seventhPlacePayout.innerText = `$${roundToNearestHundred(num*7.5)}`;
+        eighthPlacePayout.innerText = `$${roundToNearestHundred(num*7.5)}`;
+        ninthPlacePayout.innerText = `$${roundToNearestHundred(num*7.5)}`;
+        tenthPlacePayout.innerText = `$${roundToNearestHundred(num*7.5)}`;
+
+        twentyPlacePayout.innerText = `$${roundToNearestHundred(num*2)}`
+        thirtyPlacePayout.innerText = `$${roundToNearestHundred(num*2)}`; 
+        fortyPlacePayout.innerText = `$${roundToNearestHundred(num*2)}`; 
+        fiftyPlacePayout.innerText = `$${roundToNearestHundred(num*2)}`; 
+        sixtyPlacePayout.innerText = `$${0}`;
+        seventyPlacePayout.innerText = `$${0}`;
+        eightyPlacePayout.innerText = `$${0}`; 
+        ninetyPlacePayout.innerText = `$${0}`; 
+        hundredPlacePayout.innerText = `$${0}`;
+
+        // sixtyPlace.style.display="none";
+        // seventyPlace.style.display="none";
+        // eightyPlace.style.display="none";
+        // ninetyPlace.style.display="none";
+        // hundredPlace.style.display="none";
+       
+
+        overSpursPayout.innerText = `$${roundToNearestHundred(num*4)}`; 
+        underSpursPayout.innerText = `$${roundToNearestHundred(num*4)}`; 
+        OverTwentyPayout.innerText = `$${roundToNearestHundred(num*4)}`; 
+        underTwentyPayout.innerText = `$${roundToNearestHundred(num*4)}`;
+        overTenPayout.innerText = `$${roundToNearestHundred(num*4)}`;
+        underTenPayout.innerText = `$${roundToNearestHundred(num*4)}`;
+    }
+    else if (num <= 500){
         firstPlacePayout.innerText = `$${roundToNearestHundred(num*10)}`;
         secondPlacePayout.innerText = `$${roundToNearestHundred(num*10)}`;
         thirdPlacePayout.innerText = `$${roundToNearestHundred(num*10)}`;
@@ -159,6 +254,16 @@ function calcPayout(num){
         eighthPlacePayout.innerText = `$${roundToNearestHundred((500*7.5) + (num-500) * 3.75)}`;
         ninthPlacePayout.innerText = `$${roundToNearestHundred((500*7.5) + (num-500) * 3.75)}`;
         tenthPlacePayout.innerText = `$${roundToNearestHundred((500*7.5) + (num-500) * 3.75)}`;
+
+        // twentyPlace.style.display="table-row";
+        // thirtyPlace.style.display="table-row";
+        // fortyPlace.style.display="table-row";
+        // fiftyPlace.style.display="table-row";
+        // sixtyPlace.style.display="table-row";
+        // seventyPlace.style.display="table-row";
+        // eightyPlace.style.display="table-row";
+        // ninetyPlace.style.display="table-row";
+        // hundredPlace.style.display="table-row";
 
         twentyPlacePayout.innerText = `$${500*2}`; 
         thirtyPlacePayout.innerText = `$${500*2}`; 
