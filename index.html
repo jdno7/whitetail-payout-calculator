@@ -15,33 +15,39 @@
         <button>Submit</button>
     </form>
 
+    <div class="payout-info-container">
+    <div class="payout-info">
+        <table id="payout-nums">
+            <thead>
+                <tr>
+                    <th>Hunter Entries</th>
+                    <th>Payout Model</th>
+                </tr>
+                <tr>
+                    <td>500</td>
+                    <td>500</td>
+                <tr>
+                    <th>Gross Revenue</th>
+                    <th>Hunter Payout</th>
+                </tr>
+                <tr>
+                    <td>$62,500</td>
+                    <td>$62,000</td>
+                </tr>
+            </thead>
+        </table>
+  
     
-
-    <table id="payout-nums">
-        <thead>
-            <tr>
-                <th>Hunter Entries</th>
-                <th>Payout Model</th>>
-            </tr>
-            <tr>
-                <td>500</td>
-                <td>500</td>
-            <tr>
-                <th>Gross Revenue</th>
-                <th>Hunter Payout</th>
-            </tr>
-            <tr>
-                <td>$62,500</td>
-                <td>$62,000</td>
-            </tr>
-        </thead>
-    </table>
-
     <h3>Gross Margin</h3>
         <h4 id="gross-margin">$250</h4>
-    <h2>TOP TEN</h2>
+    </div>
+</div>
 
-    <table id="top-ten">
+    <div class="row-container">
+    <div id="row">
+        <div class="leaderboard">
+        <p class="leaderboard-heading">TOP TEN</p>
+    <table class="leaderboard-table" id="top-ten">
         <thead>
             <tr>
                 <th>Place</th>
@@ -91,10 +97,11 @@
             </tr>
         </tbody>
     </table>
+    </div>
 
-    <h2>On the 10s</h2>
-
-    <table id="on-the-tens">
+    <div class="leaderboard">
+        <p class="leaderboard-heading">EVERY 10TH</p>
+    <table class="leaderboard-table" id="on-the-tens">
         <thead>
             <tr>
                 <th>Place</th>
@@ -140,11 +147,17 @@
             </tr>
         </tbody>
     </table>
-
-    <h2>Special Harvest</h2>
+    </div>
     
-    <table id="special-harvest">
+    <div class="leaderboard">
+        <p class="leaderboard-heading">SPECIAL HARVEST</p>
+    
+
+    <table class="leaderboard-table" id="special-harvest">
         <thead>
+            <!-- <tr>
+                <td><div>SPECIAL HARVEST</div></td>
+            </tr> -->
             <tr>
                 <th>Category</th>
                 <th>Payout</th>
@@ -152,11 +165,11 @@
         </thead>
             <tbody>
             <tr>
-                <td>Over 3" Sprus</td>
+                <td>Over 3" Spurs</td>
                 <td>$2000</td>
             </tr>
             <tr>
-                <td>Under 3" Sprus</td>
+                <td>Under 3" Spurs</td>
                 <td>$2000</td>
             </tr>
             <tr>
@@ -177,7 +190,9 @@
             </tr>
         </tbody>
     </table>
-
-    <script src="turkeyCalcV2.js"></script>
+</div>
+</div>
+</div>
+    <script src="turkeyCalcV3.js"></script>
 </body>
 </html>
