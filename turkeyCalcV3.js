@@ -50,6 +50,7 @@ hunterPayout.innerText = `$${calcHunterPayout()}`;
 document.getElementById('gross-margin').innerText = `$${apexMargin(hEntries,calcHunterPayout())}`;
 
 entriesForm.addEventListener('submit', function(e){
+    console.log('submit')
     e.preventDefault();
 
         hEntries = document.querySelector('input[id ="hunter-entries"]').value;
@@ -65,7 +66,8 @@ entriesForm.addEventListener('submit', function(e){
    
 
    if (hEntries > 500){
-        payoutModel.innerText = roundTwoFidy(hEntries);
+        // payoutModel.innerText = roundTwoFidy(hEntries);
+        payoutModel.innerText = roundOneTwentyFive(hEntries);
    }
    else{
     payoutModel.innerText = hEntries - hEntries % 10;
@@ -80,14 +82,15 @@ entriesForm.addEventListener('submit', function(e){
 
 
 function apexMargin(a,b){
-    
+    const grossMargin = a * 125 - b
+    const marginPercentage = grossMargin / grossRev(hEntries)
     if (a * 125 - b < 0){
         document.getElementById('gross-margin').className ='negative';
-        return a * 125 - b;
+        return grossMargin;
     }
     else{
     document.getElementById('gross-margin').className = '';
-    return a * 125 - b;
+    return `${a * 125 - b} (${marginPercentage.toFixed(2).slice(2)}%)`;
     }
 }
 
@@ -114,13 +117,19 @@ function roundTwoFidy(num){
     return num;
 };
 
+function roundOneTwentyFive(num){
+    num = num - num % 125;
+    return num;
+};
+
 function roundToNearestHundred(num){
-    if (num % 100 < 50){
-        num -= num % 100;
-    }
-    else {
-        num += 100 - num % 100;
-    }
+    // if (num % 100 < 50){
+    //     num -= num % 100;
+    // }
+    // else {
+    //     num += 100 - num % 100;
+    // }
+    num = num - num%100
     return num
 }
 
@@ -128,26 +137,19 @@ function roundToNearestHundred(num){
 
 function calcPayout(num){
 
+    // Round Payout Entries Model to the nearest ten down
     num -= num % 10;
 
-    if (num < 150){
+    if (num < 60){
+        // Set Minimum Special Harvest Payout to $250
        let specialHarvestPayout = 0
-        if (num*4 < 250) {
+       if (roundToNearestHundred(num*4) < 250) {
+            // if (hEntries > 19) specialHarvestPayout = 250
             specialHarvestPayout = 250
-            console.log(specialHarvestPayout)
-        } else specialHarvestPayout = roundToNearestHundred(num*4)
-        // num -= num % 50;
-        // firstPlacePayout.innerText = `$${roundToNearestHundred(num*6)}`;
-        // secondPlacePayout.innerText = `$${roundToNearestHundred(num*6)}`;
-        // thirdPlacePayout.innerText = `$${roundToNearestHundred(num*6)}`;
-        // fourthPlacePayout.innerText = `$${roundToNearestHundred(num*6)}`;
-        // fifthPlacePayout.innerText = `$${roundToNearestHundred(num*6)}`;
-        // sixthPlacePayout.innerText = `$${roundToNearestHundred(num*4.5)}`;
-        // seventhPlacePayout.innerText = `$${roundToNearestHundred(num*4.5)}`;
-        // eighthPlacePayout.innerText = `$${roundToNearestHundred(num*4.5)}`;
-        // ninthPlacePayout.innerText = `$${roundToNearestHundred(num*4.5)}`;
-        // tenthPlacePayout.innerText = `$${roundToNearestHundred(num*4.5)}`;
-
+       } else {specialHarvestPayout = roundToNearestHundred(num*4)}
+            
+        // Top Ten Places to loop through and calulate a Payout for depending on the # of Entries
+        // Payout one place for every 10 entries
         const payoutPlaces = [
             firstPlacePayout,
             secondPlacePayout,
@@ -160,16 +162,22 @@ function calcPayout(num){
             ninthPlacePayout,
             tenthPlacePayout
         ]
-        const places = Math.floor(num / 10)
+        
+        let places = Math.floor(num / 10)
+         if (places < 3) places = 3
+        // if (places > 10) places = 10
         console.log("Places ===",places)
         console.log(payoutPlaces.slice(0,places))
-        for (let i = 0; i <= places; i++) {
-            if (i > 4) {
-                console.log(payoutPlaces[i])
-                payoutPlaces[i].innerText = `$${roundToNearestHundred(num*4.5)}`;
+
+
+        for (let i = 0; i < places; i++) {
+            if (i >= places / 2) {
+                if (roundToNearestHundred(num*12.5) < 250) payoutPlaces[i].innerText = `$250`
+                else payoutPlaces[i].innerText = `$${roundToNearestHundred(num*12.5)}`;
             } else {
-                console.log(payoutPlaces[i])
-                payoutPlaces[i].innerText = `$${roundToNearestHundred(num*6)}`;
+                console.log('payout',roundToNearestHundred(num*15))
+                if (roundToNearestHundred(num*15) < 250) payoutPlaces[i].innerText = `$250`
+                else payoutPlaces[i].innerText = `$${roundToNearestHundred(num*15)}`;
             }
             
         }
@@ -188,18 +196,286 @@ function calcPayout(num){
         seventyPlacePayout.innerText = `$${0}`;
         eightyPlacePayout.innerText = `$${0}`; 
         ninetyPlacePayout.innerText = `$${0}`; 
-        hundredPlacePayout.innerText = `$${0}`;
+        hundredPlacePayout.innerText = `$${0}`;      
 
-        // twentyPlace.style.display="none";
-        // thirtyPlace.style.display="none";
-        // fortyPlace.style.display="none";
-        // fiftyPlace.style.display="none";
-        // sixtyPlace.style.display="none";
-        // seventyPlace.style.display="none";
-        // eightyPlace.style.display="none";
-        // ninetyPlace.style.display="none";
-        // hundredPlace.style.display="none";
-       
+        overSpursPayout.innerText = `$${specialHarvestPayout}`; 
+        underSpursPayout.innerText = `$${specialHarvestPayout}`;
+        OverTwentyPayout.innerText = `$${specialHarvestPayout}`; 
+        underTwentyPayout.innerText = `$${specialHarvestPayout}`;
+        overTenPayout.innerText = `$${specialHarvestPayout}`;
+        underTenPayout.innerText = `$${specialHarvestPayout}`;
+    }
+    else if (num < 70){
+        // Set Minimum Special Harvest Payout to $250
+        let specialHarvestPayout = 0
+        if (roundToNearestHundred(num*4) < 250) {
+            specialHarvestPayout = 250
+        } else {specialHarvestPayout = roundToNearestHundred(num*4)}
+            
+        // Top Ten Places to loop through and calulate a Payout for depending on the # of Entries
+        // Payout one place for every 10 entries
+        const payoutPlaces = [
+            firstPlacePayout,
+            secondPlacePayout,
+            thirdPlacePayout,
+            fourthPlacePayout,
+            fifthPlacePayout,
+            sixthPlacePayout, 
+            seventhPlacePayout,
+            eighthPlacePayout, 
+            ninthPlacePayout,
+            tenthPlacePayout
+        ]
+        
+        let places = Math.floor(num / 10)
+         if (places < 3) places = 3
+        // if (places > 10) places = 10
+        console.log("Places ===",places)
+        console.log(payoutPlaces.slice(0,places))
+
+
+        for (let i = 0; i < places; i++) {
+            if (i >= places / 2) {
+                if (roundToNearestHundred(num*12.5) < 250) payoutPlaces[i].innerText = `$250`
+                else payoutPlaces[i].innerText = `$${roundToNearestHundred(num*10)}`;
+            } else {
+                console.log('payout',roundToNearestHundred(num*15))
+                if (roundToNearestHundred(num*15) < 250) payoutPlaces[i].innerText = `$250`
+                else payoutPlaces[i].innerText = `$${roundToNearestHundred(num*12)}`;
+            }
+            
+        }
+
+        if (places < 10) {
+            for (let p of payoutPlaces.slice(places)) {
+                p.innerText = "$0"
+            }
+        }
+
+        twentyPlacePayout.innerText = `$${0}`; 
+        thirtyPlacePayout.innerText = `$${0}`; 
+        fortyPlacePayout.innerText = `$${0}`; 
+        fiftyPlacePayout.innerText = `$${0}`; 
+        sixtyPlacePayout.innerText = `$${0}`;
+        seventyPlacePayout.innerText = `$${0}`;
+        eightyPlacePayout.innerText = `$${0}`; 
+        ninetyPlacePayout.innerText = `$${0}`; 
+        hundredPlacePayout.innerText = `$${0}`;      
+
+        overSpursPayout.innerText = `$${specialHarvestPayout}`; 
+        underSpursPayout.innerText = `$${specialHarvestPayout}`;
+        OverTwentyPayout.innerText = `$${specialHarvestPayout}`; 
+        underTwentyPayout.innerText = `$${specialHarvestPayout}`;
+        overTenPayout.innerText = `$${specialHarvestPayout}`;
+        underTenPayout.innerText = `$${specialHarvestPayout}`;
+    }
+    else if (num < 80){
+        // Set Minimum Special Harvest Payout to $250
+        let specialHarvestPayout = 0
+        if (roundToNearestHundred(num*4) < 250) {
+            specialHarvestPayout = 250
+        } else {specialHarvestPayout = roundToNearestHundred(num*4)}
+            
+        // Top Ten Places to loop through and calulate a Payout for depending on the # of Entries
+        // Payout one place for every 10 entries
+        const payoutPlaces = [
+            firstPlacePayout,
+            secondPlacePayout,
+            thirdPlacePayout,
+            fourthPlacePayout,
+            fifthPlacePayout,
+            sixthPlacePayout, 
+            seventhPlacePayout,
+            eighthPlacePayout, 
+            ninthPlacePayout,
+            tenthPlacePayout
+        ]
+        
+        let places = Math.floor(num / 10)
+         if (places < 3) places = 3
+        // if (places > 10) places = 10
+        console.log("Places ===",places)
+        console.log(payoutPlaces.slice(0,places))
+
+
+        for (let i = 0; i < places; i++) {
+            if (i >= places / 2) {
+                if (roundToNearestHundred(num*12.5) < 250) payoutPlaces[i].innerText = `$250`
+                else payoutPlaces[i].innerText = `$${roundToNearestHundred(num*9)}`;
+            } else {
+                console.log('payout',roundToNearestHundred(num*15))
+                if (roundToNearestHundred(num*15) < 250) payoutPlaces[i].innerText = `$250`
+                else payoutPlaces[i].innerText = `$${roundToNearestHundred(num*11)}`;
+            }
+            
+        }
+
+        if (places < 10) {
+            for (let p of payoutPlaces.slice(places)) {
+                p.innerText = "$0"
+            }
+        }
+
+        twentyPlacePayout.innerText = `$${0}`; 
+        thirtyPlacePayout.innerText = `$${0}`; 
+        fortyPlacePayout.innerText = `$${0}`; 
+        fiftyPlacePayout.innerText = `$${0}`; 
+        sixtyPlacePayout.innerText = `$${0}`;
+        seventyPlacePayout.innerText = `$${0}`;
+        eightyPlacePayout.innerText = `$${0}`; 
+        ninetyPlacePayout.innerText = `$${0}`; 
+        hundredPlacePayout.innerText = `$${0}`;      
+
+        overSpursPayout.innerText = `$${specialHarvestPayout}`; 
+        underSpursPayout.innerText = `$${specialHarvestPayout}`;
+        OverTwentyPayout.innerText = `$${specialHarvestPayout}`; 
+        underTwentyPayout.innerText = `$${specialHarvestPayout}`;
+        overTenPayout.innerText = `$${specialHarvestPayout}`;
+        underTenPayout.innerText = `$${specialHarvestPayout}`;
+    }
+    else if (num < 100){
+        // Set Minimum Special Harvest Payout to $250
+        let specialHarvestPayout = 0
+        if (roundToNearestHundred(num*4) < 250) {
+            specialHarvestPayout = 250
+        } else {specialHarvestPayout = roundToNearestHundred(num*4)}
+            
+        // Top Ten Places to loop through and calulate a Payout for depending on the # of Entries
+        // Payout one place for every 10 entries
+        const payoutPlaces = [
+            firstPlacePayout,
+            secondPlacePayout,
+            thirdPlacePayout,
+            fourthPlacePayout,
+            fifthPlacePayout,
+            sixthPlacePayout, 
+            seventhPlacePayout,
+            eighthPlacePayout, 
+            ninthPlacePayout,
+            tenthPlacePayout
+        ]
+        
+        let places = Math.floor(num / 10)
+         if (places < 3) places = 3
+        // if (places > 10) places = 10
+        console.log("Places ===",places)
+        console.log(payoutPlaces.slice(0,places))
+
+
+        for (let i = 0; i < places; i++) {
+            if (i >= places / 2) {
+                if (roundToNearestHundred(num*12.5) < 250) payoutPlaces[i].innerText = `$250`
+                else payoutPlaces[i].innerText = `$${roundToNearestHundred(num*7.5)}`;
+            } else {
+                console.log('payout',roundToNearestHundred(num*15))
+                if (roundToNearestHundred(num*15) < 250) payoutPlaces[i].innerText = `$250`
+                else payoutPlaces[i].innerText = `$${roundToNearestHundred(num*9.5)}`;
+            }
+            
+        }
+
+        if (places < 10) {
+            for (let p of payoutPlaces.slice(places)) {
+                p.innerText = "$0"
+            }
+        }
+
+        twentyPlacePayout.innerText = `$${0}`; 
+        thirtyPlacePayout.innerText = `$${0}`; 
+        fortyPlacePayout.innerText = `$${0}`; 
+        fiftyPlacePayout.innerText = `$${0}`; 
+        sixtyPlacePayout.innerText = `$${0}`;
+        seventyPlacePayout.innerText = `$${0}`;
+        eightyPlacePayout.innerText = `$${0}`; 
+        ninetyPlacePayout.innerText = `$${0}`; 
+        hundredPlacePayout.innerText = `$${0}`;      
+
+        overSpursPayout.innerText = `$${specialHarvestPayout}`; 
+        underSpursPayout.innerText = `$${specialHarvestPayout}`;
+        OverTwentyPayout.innerText = `$${specialHarvestPayout}`; 
+        underTwentyPayout.innerText = `$${specialHarvestPayout}`;
+        overTenPayout.innerText = `$${specialHarvestPayout}`;
+        underTenPayout.innerText = `$${specialHarvestPayout}`;
+    }
+    else if (num < 150 && num >= 100){
+        // Set Minimum Special Harvest Payout to $250
+       let specialHarvestPayout = 0
+        if (num*4 < 250) {
+            specialHarvestPayout = 250
+            
+        } else specialHarvestPayout = roundToNearestHundred(num*4)
+        // Top Ten Places to loop through and calulate a Payout for depending on the # of Entries
+        // Payout one place for every 10 entries
+        const payoutPlaces = [
+            firstPlacePayout,
+            secondPlacePayout,
+            thirdPlacePayout,
+            fourthPlacePayout,
+            fifthPlacePayout,
+            sixthPlacePayout, 
+            seventhPlacePayout,
+            eighthPlacePayout, 
+            ninthPlacePayout,
+            tenthPlacePayout
+        ]
+        
+        let places = Math.floor(num / 10)
+        if (places > 10) places = 10
+        console.log("Places ===",places)
+        console.log(payoutPlaces.slice(0,places))
+
+
+        for (let i = 0; i < places; i++) {
+            if (i >= places / 2) {
+                console.log(`i=${i} places=${places} `)
+                console.log(payoutPlaces[i])
+                payoutPlaces[i].innerText = `$${roundToNearestHundred(num*6.5)}`;
+            } else {
+                console.log(payoutPlaces[i])
+                payoutPlaces[i].innerText = `$${roundToNearestHundred(num*8)}`;
+            }
+            
+        }
+
+        if (places < 10) {
+            for (let p of payoutPlaces.slice(places)) {
+                p.innerText = "$0"
+            }
+        }
+
+        twentyPlacePayout.innerText = `$${0}`; 
+        thirtyPlacePayout.innerText = `$${0}`; 
+        fortyPlacePayout.innerText = `$${0}`; 
+        fiftyPlacePayout.innerText = `$${0}`; 
+        sixtyPlacePayout.innerText = `$${0}`;
+        seventyPlacePayout.innerText = `$${0}`;
+        eightyPlacePayout.innerText = `$${0}`; 
+        ninetyPlacePayout.innerText = `$${0}`; 
+        hundredPlacePayout.innerText = `$${0}`;      
+
+        overSpursPayout.innerText = `$${specialHarvestPayout}`; 
+        underSpursPayout.innerText = `$${specialHarvestPayout}`;
+        OverTwentyPayout.innerText = `$${specialHarvestPayout}`; 
+        underTwentyPayout.innerText = `$${specialHarvestPayout}`;
+        overTenPayout.innerText = `$${specialHarvestPayout}`;
+        underTenPayout.innerText = `$${specialHarvestPayout}`;
+    }
+    else if (num < 150){
+       let specialHarvestPayout = 0
+        if (num*4 < 250) {
+            specialHarvestPayout = 250
+            console.log(specialHarvestPayout)
+        } else specialHarvestPayout = roundToNearestHundred(num*4)
+
+        twentyPlacePayout.innerText = `$${0}`; 
+        thirtyPlacePayout.innerText = `$${0}`; 
+        fortyPlacePayout.innerText = `$${0}`; 
+        fiftyPlacePayout.innerText = `$${0}`; 
+        sixtyPlacePayout.innerText = `$${0}`;
+        seventyPlacePayout.innerText = `$${0}`;
+        eightyPlacePayout.innerText = `$${0}`; 
+        ninetyPlacePayout.innerText = `$${0}`; 
+        hundredPlacePayout.innerText = `$${0}`;      
 
         overSpursPayout.innerText = `$${specialHarvestPayout}`; 
         underSpursPayout.innerText = `$${specialHarvestPayout}`;
@@ -230,12 +506,6 @@ function calcPayout(num){
         eightyPlacePayout.innerText = `$${0}`; 
         ninetyPlacePayout.innerText = `$${0}`; 
         hundredPlacePayout.innerText = `$${0}`;
-
-        // sixtyPlace.style.display="none";
-        // seventyPlace.style.display="none";
-        // eightyPlace.style.display="none";
-        // ninetyPlace.style.display="none";
-        // hundredPlace.style.display="none";
        
 
         overSpursPayout.innerText = `$${roundToNearestHundred(num*4)}`; 
@@ -277,10 +547,19 @@ function calcPayout(num){
     }
 
     if (num > 500){
-        if (num > 500 && num < 750) { num = 500 } 
-        if (num > 750 && num < 1000) { num = 750 } 
-        if (num > 1000 && num < 1250) { num = 1000 } 
-        if (num > 1250 && num < 1500) { num = 1250 } 
+        // if (num > 500 && num < 750) { num = 500 } 
+        // if (num > 750 && num < 1000) { num = 750 } 
+        // if (num > 1000 && num < 1250) { num = 1000 } 
+        // if (num > 1250 && num < 1500) { num = 1250 } 
+        if (num > 500 && num < 625) { num = 500 } 
+        if (num > 625 && num < 750) { num = 625 } 
+        if (num > 750 && num < 875) { num = 750 } 
+        if (num > 875 && num < 1000) { num = 875 } 
+        if (num > 1000 && num < 1125) { num = 1000 } 
+        if (num > 1125 && num < 1250) { num = 1125 } 
+        if (num > 1250 && num < 1375) { num = 1250 } 
+        if (num > 1375 && num < 1500) { num = 1375 } 
+        // if (num > 1250 && num < 1500) { num = 1500 } 
         // if (num > 500 && num < 750) { num = 500 } 
         firstPlacePayout.innerText = `$${roundToNearestHundred(num*6)}`;
         secondPlacePayout.innerText = `$${roundToNearestHundred(num*6)}`;
@@ -304,7 +583,7 @@ function calcPayout(num){
         hundredPlacePayout.innerText = `$500`;
 
         // overSpursPayout.innerText = `$${roundToNearestHundred(num*2.70)}`; 
-        overSpursPayout.innerText = `$${roundTwoFidy(num*3)}`; 
+        overSpursPayout.innerText = `$${roundToNearestHundred(num*3)}`; 
         underSpursPayout.innerText = `$${roundToNearestHundred(num*3)}`; 
         OverTwentyPayout.innerText = `$${roundToNearestHundred(num*3)}`; 
         underTwentyPayout.innerText = `$${roundToNearestHundred(num*3)}`;

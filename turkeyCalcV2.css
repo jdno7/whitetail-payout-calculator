@@ -101,6 +101,7 @@ h3 {
 
 .leaderboard {
     width: 30%;
+    min-width: 400px;
     max-width: 500px;
     background-color: rgba(128, 128, 128, 0.69);
     margin: 1%;
@@ -110,6 +111,7 @@ h3 {
 .payout-info {
     padding-top: 1.5%;
     width: 63%;
+    min-width: 1250px;
     text-align: center;
     margin: auto;
     margin-top: 0px;
