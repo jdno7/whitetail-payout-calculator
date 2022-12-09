@@ -40,6 +40,9 @@ const grossRevenue = document.querySelector('#payout-nums tr:nth-child(4) td:nth
 const hunterPayout = document.querySelector('#payout-nums tr:nth-child(4) td:nth-child(2)');
 const grossMargin = document.getElementById('gross-margin')
 
+const entriesForm = document.querySelector('form');
+
+// Master Payouts Object to update with new calculations and reference for UI / DOM manipulation
 const payouts = {
     '1st': 0,
     '2nd': 0,
@@ -79,77 +82,25 @@ const payouts = {
     'payoutModel' : 0
 }
 
-const entriesForm = document.querySelector('form');
-
+// Set default hunter entries value and calculate 
 let hEntries = 500;
 calcNewPayout(hEntries)
-// hunterEntries.innerText = hEntries;
-// grossRevenue.innerText = `$${grossRev(hEntries)}`;
-// hunterPayout.innerText = `$${calcHunterPayout()}`;
-// document.getElementById('gross-margin').innerText = `$${apexMargin(hEntries,calcHunterPayout())}`;
-
+// Event listener for now Hunter Entries submissions
 entriesForm.addEventListener('submit', function(e){
     console.log('submit')
     e.preventDefault();
 
         hEntries = document.querySelector('input[id ="hunter-entries"]').value;
-   
+//    If there were additional 'deep payouts' added to the DOM 
+// remove them prior to a new payout calculation
    if (document.querySelectorAll('#new-payout')){
-
         let oldPayouts = (document.querySelectorAll('#new-payout'));
         oldPayouts.forEach(payout => payout.remove());
 }
      
     calcNewPayout(hEntries);
 
-   
-
-//    if (hEntries > 500){
-//         // payoutModel.innerText = roundTwoFidy(hEntries);
-//         payoutModel.innerText = roundOneTwentyFive(hEntries);
-//    }
-//    else{
-//     payoutModel.innerText = hEntries - hEntries % 10;
-//    }
-   hunterEntries.innerText = hEntries;
-   grossRevenue.innerText = `$${grossRev(hEntries)}`;
-   hunterPayout.innerText = `$${calcHunterPayout()}`;
-   document.getElementById('gross-margin').innerText = `$${apexMargin(hEntries,calcHunterPayout())}`;
-    
-
 })
-
-
-function apexMargin(a,b){
-    const grossMargin = a * 125 - b
-    const marginPercentage = grossMargin / grossRev(hEntries)
-    if (a * 125 - b < 0){
-        document.getElementById('gross-margin').className ='negative';
-        return grossMargin;
-    }
-    else{
-    document.getElementById('gross-margin').className = '';
-    return `${a * 125 - b} (${marginPercentage.toFixed(2).slice(2)}%)`;
-    }
-}
-
-function calcHunterPayout(){
-    payoutTotal = 0;
-    const tdsArr = Array.from(document.querySelectorAll('tr td:nth-child(2)'));
-    tdsArr.shift();
-    tdsArr.shift();
-    const numsArr = tdsArr.forEach(function(td){
-        
-       payoutTotal += parseInt(td.innerText.replace('$',""));
-    
-    })
-    return payoutTotal;
-}
-
-function grossRev(num){
-   return num * 125;
-
-}
 
 function roundTwoFidy(num){
     num = num - num % 250;
@@ -171,27 +122,30 @@ function roundToNearestFiddy(num){
 }
 
 function calcNewPayout(num) {
-    // Rules:
-        // Hunter Payout start at Gross Revenue * .65 Prior to Rounding individual places
 
-        // Apex Margin starts at Gross Revenue * .35 Prior to rounding individual places
+    // ************************Algorithm Rules*********************************
 
-        // Payout Model:
+        // Hunter Payout starts at (Gross Revenue * .65) Prior to Rounding individual places
+
+        // Apex Margin starts at (Gross Revenue * .35) Prior to rounding individual places
+
+        // Payout Models:
             // Under 400 Total Entries:
                 // Round down to the nearest 10
             // Over 400 Total Entries:
                 // Round down to the Nearest 50
                 
         // Top Scoring Payouts:
-            //  < 100 entries add a place to the payout for every 10 hunters with a minimum of 3 payouts
+            //  Less Than 100 entries add a place to the payout for every 10 hunters with a minimum of 3 payouts
                 // Examples: 
                     // 20 entries = top 3 scores would be paid 
                     // 67 Entries = Top 6 Scores would be paid
+
             //  Top Ten Payout Purse = Hunter Payout * .74
 
-            // Top Half of the Top payouts = Top Ten Purse / number of Payouts * 1.125
+            // Top Half of the Top Payouts = Top Ten Purse / number of Payouts * 1.125
 
-            // Bottom Half of the Top payouts = Top Ten Purse / number of Payouts * .875
+            // Bottom Half of the Top Payouts = Top Ten Purse / number of Payouts * .875
                 // Examples:
                     // 56 Entries = 5 Payouts 
                         // 1st - 2nd - 3rd = Top Ten Purse / number of Payouts * 1.125
@@ -205,10 +159,10 @@ function calcNewPayout(num) {
                         // 1st - 2nd - 3rd - 4th - 5th = (Top Ten Purse / number of Payouts * 1.125)
                         // 5th - 6th - 7th - 8th - 9th - 10th = (Top Ten Purse / number of Payouts * .875)
 
-            // Rounding:
-                // Down to nearest $250 payout Model 350 Entries and above 
-                // Down to nearest $100 payout Model Less than 350 Entries and above 100 Entries 
-                // Down to nearest $50 payout Model Less than 100 entries 
+            // Rounding Top Payouts:
+                // Down to nearest $250 - payout Model 350 Entries and above 
+                // Down to nearest $100 - payout Model Less than 350 Entries and above 100 Entries 
+                // Down to nearest $50 - payout Model Less than 100 entries 
 
         // Outside Top Ten Payouts:
             // (1 Payout + 2 Payouts) are added to every 10th spot outside the top ten (starting with 20th) for Every 100 Places 
@@ -219,9 +173,9 @@ function calcNewPayout(num) {
                     
                     // 5 Payouts outside the top ten (20th, 30th, 40th, 50th) for 560 entries + 2 additional Payouts (60th and 70th)
 
-            // Top half of payouts are $1000 350 enties and up *** $500 349 entries and down 
+            // Top half of Outside Top Ten Payouts are $1000 350 enties and up *** $500 349 entries and down 
                 
-            // Bottom half of payouts are $500 350 enties and up *** $250 349 entries and down 
+            // Bottom half of Outside Top Ten Payouts are $500 350 enties and up *** $250 349 entries and down 
 
                 // Examples: 
                     // 323 Entries = (20th, 30th, 40th = $500) (50th, 60th = $250) 
@@ -233,9 +187,14 @@ function calcNewPayout(num) {
             // Maximum of $4000
             // Minimum of $250
             // No Special Harvest Payouts Less than 20 Entries
-            // Rounding:
+            // Rounding Special Harves Payouts:
                 // Less than 200 Entries Round down to the nearest 100
                 // More than 200 Entries Round down to the nearest 250
+
+    // ************************END Algorithm Rules*********************************************
+
+
+
 
 
         // Round the Payout Model either down nearest 10 or 50
@@ -248,15 +207,14 @@ function calcNewPayout(num) {
 
     //    desired hunter purse to dispearse prior to rounding
        let apexHunterPurse = (num * 125) * .65
-    //    const topTenPurse = apexHunterPurse * .74
+
+    // If Entries are less than 20, the top Ten Purse gets all of the apexHunter Purse 
        let topTenPurse = 0  
         if (num > 19){
-            
             topTenPurse += apexHunterPurse * .74
         }else {
             apexHunterPurse = num * 125
             topTenPurse += apexHunterPurse
-            console.log('top ten purse under 20====',topTenPurse)
         }
    
        let specialHarvestPayout = 0
@@ -265,14 +223,12 @@ function calcNewPayout(num) {
 
                 if (num < 20) specialHarvestPayout = 0
 
-                hEntries < 40 ? specialHarvestPayout = 0 : specialHarvestPayout = Math.max(roundToNearestHundred(apexHunterPurse * .035),250)
+                num < 40 ? specialHarvestPayout = 0 : specialHarvestPayout = Math.max(roundToNearestHundred(apexHunterPurse * .035),250)
 
        }else {
             specialHarvestPayout = Math.min(roundTwoFidy(apexHunterPurse * .0375), 4000)
             }
 
-       
-            
        
         const topTenPayouts = [
             '1st',
@@ -316,7 +272,7 @@ function calcNewPayout(num) {
             'beardUnder10'
         ]
 
-
+        // Calculating the TOP PLACE PAYOUTS
         let topPlaces = Math.floor(num / 10)
         if (topPlaces < 3) topPlaces = 3
         if (topPlaces > 10) topPlaces = 10
@@ -375,10 +331,11 @@ function calcNewPayout(num) {
             }
         }
         
-
+        // Apply Special Harvest Payouts to the 'payouts' object
         for (let category of specialHarvestPayouts) {
             payouts[category] = specialHarvestPayout
         }
+        // Sum up all payouts in the 'payouts' object and calculate other payout info
         payouts['hunterPayout'] = Object.values(payouts).reduce((a,b) => a+b)
         payouts['grossRevenue'] = hEntries * 125
         payouts['grossMargin'] = payouts['grossRevenue'] - payouts['hunterPayout']
@@ -386,8 +343,7 @@ function calcNewPayout(num) {
         payouts['payoutModel'] = num
         console.log(payouts)
 
-        // Calculated payouts and payout info above in the 'payouts' object
-        // Now manipulating html for front end display
+        // Now manipulating html for front end display for the default 500 entry model
         firstPlacePayout.innerText = `$${payouts['1st']}`
         secondPlacePayout.innerText = `$${payouts['2nd']}`
         thirdPlacePayout.innerText = `$${payouts['3rd']}`
@@ -408,7 +364,7 @@ function calcNewPayout(num) {
         eightyPlacePayout.innerText = `$${payouts['80th']}`
 
 
-        // If our Payout Model is 600 or greater we will start appending deep payouts to the UI
+        // If our Payout Model is 600 or greater start appending deep payouts to the DOM
         if (num >= 600) {
             // pull all the possible deep payout values from the main 'payouts' object
             const deepPayouts = {
@@ -441,18 +397,18 @@ function calcNewPayout(num) {
                 }else continue
             }
         }
-    
+        // Apply special harvest payouts to the DOM
         overSpursPayout.innerText = `$${payouts['spursOver3']}`
         underSpursPayout.innerText = `$${payouts['spursUnder3']}`
         overTwentyPayout.innerText = `$${payouts['over20Lbs']}`
         underTwentyPayout.innerText = `$${payouts['under20Lbs']}`
         overTenPayout.innerText = `$${payouts['beardOver10']}`
         underTenPayout.innerText = `$${payouts['beardUnder10']}`
-
+        // Apply Payout info to the DOM
         hunterEntries.innerText = `${hEntries}`
         payoutModel.innerText = `${payouts['payoutModel']}`
         grossRevenue.innerText = `$${payouts['grossRevenue']}`
         hunterPayout.innerText = `$${payouts['hunterPayout']}`
-        grossMargin.innerText = `$${payouts['grossMargin']} (${payouts['marginPercent']})`
+        grossMargin.innerText = `$${payouts['grossMargin']} (${payouts['marginPercent']}%)`
 
 }

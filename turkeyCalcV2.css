@@ -10,10 +10,39 @@ table{
     letter-spacing: .2em;
 }
 
+h1 {
+    text-align: center;
+    font-size: 5em;
+    /* margin: 50px 0px 25px; */
+}
+
 h2{
     font-size: 3em;
     text-align: center;
     text-decoration: underline;
+}
+
+form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 0 0 0;
+}
+
+label {
+    font-size: 2.5em;
+    margin: 20px;
+    font-weight: 500;
+}
+
+input {
+    height: 100%;
+    font-size: 2em;
+    max-width: 150px;
+    padding: 5px;
+    margin: 20px;
+    border-radius: 15px;
+    text-align: center;
 }
 
 th:nth-child(1){
@@ -95,7 +124,7 @@ h3 {
 #row {
     width: 70%;
     display: flex;
-    margin: 80px;
+    margin: 20px 80px 80px 80px;
     justify-content: center;
 }
 
@@ -140,4 +169,10 @@ h5 {
 .leaderboard-table {
     width: 90%;
 
+}
+
+@media screen and (min-width: 500px) {
+    button {
+        display: none
+    };
 }
