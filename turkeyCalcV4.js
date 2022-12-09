@@ -295,7 +295,7 @@ function calcNewPayout(num) {
                     payouts[topTenPayouts[i]] = Math.max(roundToNearestHundred(bottomHalfPayout), 250);
                 } 
                 else {
-                    payouts[topTenPayouts[i]] = roundTwoFidy(bottomHalfPayout);
+                    payouts[topTenPayouts[i]] = Math.min(roundTwoFidy(bottomHalfPayout), 7500);
                 }
             } else {
                 if (num < 50) {
