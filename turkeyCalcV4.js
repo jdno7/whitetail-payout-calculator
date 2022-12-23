@@ -40,7 +40,8 @@ const grossRevenue = document.querySelector('#payout-nums tr:nth-child(4) td:nth
 const hunterPayout = document.querySelector('#payout-nums tr:nth-child(4) td:nth-child(2)');
 const grossMargin = document.getElementById('gross-margin')
 
-const entriesForm = document.querySelector('form');
+const entriesForm = document.querySelector('#hunter-entries');
+const entryFeeForm = document.querySelector('#entry-fee');
 
 // Master Payouts Object to update with new calculations and reference for UI / DOM manipulation
 const payouts = {
@@ -79,13 +80,16 @@ const payouts = {
     'beardUnder10': 0,
     'hunterPayout': 0,
     'grossRevenue': 0,
-    'payoutModel' : 0
+    'payoutModel' : 0,
+    'entryFee' : 0
 }
 
 // Set default hunter entries value and calculate 
 let hEntries = 500;
-calcNewPayout(hEntries)
-// Event listener for now Hunter Entries submissions
+// Set default entry fee value and calculate 
+let entryFee = 125;
+calcNewPayout(hEntries, entryFee)
+// Event listener for new Hunter Entries submissions
 entriesForm.addEventListener('submit', function(e){
     console.log('submit')
     e.preventDefault();
@@ -98,8 +102,23 @@ entriesForm.addEventListener('submit', function(e){
         oldPayouts.forEach(payout => payout.remove());
 }
      
-    calcNewPayout(hEntries);
+    calcNewPayout(hEntries, entryFee);
 
+})
+
+entryFeeForm.addEventListener('submit', function(e){
+    e.preventDefault()
+
+    entryFee = document.querySelector('input[id ="entry-fee"]').value;
+    hEntries = document.querySelector('input[id ="hunter-entries"]').value;
+    !hEntries? hEntries=500 : undefined 
+
+    if (document.querySelectorAll('#new-payout')){
+        let oldPayouts = (document.querySelectorAll('#new-payout'));
+        oldPayouts.forEach(payout => payout.remove());
+    }
+
+    calcNewPayout(hEntries, entryFee)
 })
 
 function roundTwoFidy(num){
@@ -121,7 +140,7 @@ function roundToNearestFiddy(num){
     return num
 }
 
-function calcNewPayout(num) {
+function calcNewPayout(num, entryFee) {
 
     // ************************Algorithm Rules*********************************
 
@@ -206,24 +225,26 @@ function calcNewPayout(num) {
         }
 
     //    desired hunter purse to dispearse prior to rounding
-       let apexHunterPurse = (num * 125) * .65
-
+       let apexHunterPurse = (num * entryFee) * .65
+        console.log("Entry Fee===", entryFee)
+        console.log("apexHunterPurse===", apexHunterPurse)
+        console.log("payouts===", payouts)
     // If Entries are less than 20, the top Ten Purse gets all of the apexHunter Purse 
        let topTenPurse = 0  
         if (num > 19){
             topTenPurse += apexHunterPurse * .74
         }else {
-            apexHunterPurse = num * 125
+            apexHunterPurse = num * entryFee
             topTenPurse += apexHunterPurse
         }
    
        let specialHarvestPayout = 0
        if (num < 400) {
-                if (num > 200) specialHarvestPayout = Math.max(roundToNearestHundred(apexHunterPurse * .035), 1000)
+                if (num > 200) specialHarvestPayout = Math.max(roundToNearestHundred(apexHunterPurse * .035), entryFee*8)
 
                 if (num < 20) specialHarvestPayout = 0
 
-                num < 40 ? specialHarvestPayout = 0 : specialHarvestPayout = Math.max(roundToNearestHundred(apexHunterPurse * .035),250)
+                num < 40 ? specialHarvestPayout = 0 : specialHarvestPayout = Math.max(roundToNearestHundred(apexHunterPurse * .035),entryFee*2)
 
        }else {
             specialHarvestPayout = Math.min(roundTwoFidy(apexHunterPurse * .0375), 4000)
@@ -286,26 +307,26 @@ function calcNewPayout(num) {
         for (let i = 0; i < topPlaces; i++) {
             if (i >= topPlaces / 2) {
                 if (num < 50) {
-                    payouts[topTenPayouts[i]] = Math.max(roundToNearestFiddy(bottomHalfPayout), 250);
+                    payouts[topTenPayouts[i]] = Math.max(roundToNearestFiddy(bottomHalfPayout), entryFee*2);
                 }
                 else if (num < 100 && num > 49) {
-                    payouts[topTenPayouts[i]] = Math.max(roundToNearestFiddy(bottomHalfPayout), 250);
+                    payouts[topTenPayouts[i]] = Math.max(roundToNearestFiddy(bottomHalfPayout), entryFee*2);
                 }
                 else if (num <= 350) {
-                    payouts[topTenPayouts[i]] = Math.max(roundToNearestHundred(bottomHalfPayout), 250);
+                    payouts[topTenPayouts[i]] = Math.max(roundToNearestHundred(bottomHalfPayout), entryFee*2);
                 } 
                 else {
                     payouts[topTenPayouts[i]] = Math.min(roundTwoFidy(bottomHalfPayout), 7500);
                 }
             } else {
                 if (num < 50) {
-                    payouts[topTenPayouts[i]] = Math.max(roundToNearestFiddy(topHalfPayout), 250);
+                    payouts[topTenPayouts[i]] = Math.max(roundToNearestFiddy(topHalfPayout), entryFee*2);
                 }
                 else if (num < 100 && num > 49) {
-                    payouts[topTenPayouts[i]] = Math.max(roundToNearestFiddy(topHalfPayout), 250);
+                    payouts[topTenPayouts[i]] = Math.max(roundToNearestFiddy(topHalfPayout), entryFee*2);
                 }
                 else if (num <= 350) {
-                    payouts[topTenPayouts[i]] = Math.max(roundToNearestHundred(topHalfPayout), 250);
+                    payouts[topTenPayouts[i]] = Math.max(roundToNearestHundred(topHalfPayout), entryFee*2);
                 } else {
                     payouts[topTenPayouts[i]] = roundTwoFidy(topHalfPayout);
                 }
@@ -317,15 +338,15 @@ function calcNewPayout(num) {
             for (let i = 0; i < outsideTopTen; i++) {
                 if (i >= outsideTopTen / 2) {
                     if (num <= 350) {
-                        payouts[outsideTopTenPayouts[i]] = 250;
+                        payouts[outsideTopTenPayouts[i]] = entryFee*2;
                     }else {
-                        payouts[outsideTopTenPayouts[i]] = 500;
+                        payouts[outsideTopTenPayouts[i]] = entryFee*4;
                     }
                 } else {
                     if (num <= 350) {
-                        payouts[outsideTopTenPayouts[i]] = 500;
+                        payouts[outsideTopTenPayouts[i]] = entryFee*4;
                     }else {
-                        payouts[outsideTopTenPayouts[i]] = 1000;
+                        payouts[outsideTopTenPayouts[i]] = entryFee*8;
                     }
                 }
             }
@@ -337,7 +358,7 @@ function calcNewPayout(num) {
         }
         // Sum up all payouts in the 'payouts' object and calculate other payout info
         payouts['hunterPayout'] = Object.values(payouts).reduce((a,b) => a+b)
-        payouts['grossRevenue'] = hEntries * 125
+        payouts['grossRevenue'] = hEntries * entryFee
         payouts['grossMargin'] = payouts['grossRevenue'] - payouts['hunterPayout']
         payouts['marginPercent'] = Math.round(payouts['grossMargin'] / payouts['grossRevenue'] * 100)
         payouts['payoutModel'] = num
@@ -389,7 +410,7 @@ function calcNewPayout(num) {
                     newTr.append(newPlaceTd);
 
                     newPayoutTd = document.createElement('td');
-                    newPayoutTd.innerText = `$500`;
+                    newPayoutTd.innerText = `$${entryFee*4}`;
                     newTr.append(newPayoutTd);
 
                     document.querySelector('#on-the-tens tbody').append(newTr);
