@@ -337,16 +337,20 @@ function calcNewPayout(num, entryFee) {
             let outsideTopTen = Math.floor((num / 100) + 2)
             for (let i = 0; i < outsideTopTen; i++) {
                 if (i >= outsideTopTen / 2) {
-                    if (num <= 350) {
+                    if (num <= 599) {
                         payouts[outsideTopTenPayouts[i]] = entryFee*2;
+                        // payouts[outsideTopTenPayouts[i]] = 250;
                     }else {
-                        payouts[outsideTopTenPayouts[i]] = entryFee*4;
+                        // payouts[outsideTopTenPayouts[i]] = entryFee*4;
+                        payouts[outsideTopTenPayouts[i]] = 500;
                     }
                 } else {
-                    if (num <= 350) {
+                    if (num <= 599) {
                         payouts[outsideTopTenPayouts[i]] = entryFee*4;
+                        // payouts[outsideTopTenPayouts[i]] = 500;
                     }else {
-                        payouts[outsideTopTenPayouts[i]] = entryFee*8;
+                        // payouts[outsideTopTenPayouts[i]] = entryFee*8;
+                        payouts[outsideTopTenPayouts[i]] = 1000;
                     }
                 }
             }
@@ -410,7 +414,8 @@ function calcNewPayout(num, entryFee) {
                     newTr.append(newPlaceTd);
 
                     newPayoutTd = document.createElement('td');
-                    newPayoutTd.innerText = `$${entryFee*4}`;
+                    // newPayoutTd.innerText = `$${entryFee*4}`;
+                    newPayoutTd.innerText = `$${500}`;
                     newTr.append(newPayoutTd);
 
                     document.querySelector('#on-the-tens tbody').append(newTr);
