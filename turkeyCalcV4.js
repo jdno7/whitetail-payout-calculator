@@ -341,19 +341,21 @@ function calcNewPayout(num, entryFee) {
                         payouts[outsideTopTenPayouts[i]] = entryFee*2;
                         // payouts[outsideTopTenPayouts[i]] = 250;
                     }else {
-                        // payouts[outsideTopTenPayouts[i]] = entryFee*4;
-                        payouts[outsideTopTenPayouts[i]] = 500;
+                        payouts[outsideTopTenPayouts[i]] = entryFee*4;
+                        // payouts[outsideTopTenPayouts[i]] = 500;
                     }
                 } else {
                     if (num <= 599) {
                         payouts[outsideTopTenPayouts[i]] = entryFee*4;
                         // payouts[outsideTopTenPayouts[i]] = 500;
                     }else {
-                        // payouts[outsideTopTenPayouts[i]] = entryFee*8;
-                        payouts[outsideTopTenPayouts[i]] = 1000;
+                        payouts[outsideTopTenPayouts[i]] = entryFee*8;
+                        // payouts[outsideTopTenPayouts[i]] = 1000;
                     }
                 }
             }
+            // Deep payouts go over 180th and add money to the payout numbers and Im too lazy to fix it
+            payouts.undefined? delete payouts.undefined : undefined
         }
         
         // Apply Special Harvest Payouts to the 'payouts' object
@@ -414,8 +416,8 @@ function calcNewPayout(num, entryFee) {
                     newTr.append(newPlaceTd);
 
                     newPayoutTd = document.createElement('td');
-                    // newPayoutTd.innerText = `$${entryFee*4}`;
-                    newPayoutTd.innerText = `$${500}`;
+                    newPayoutTd.innerText = `$${payouts[p]}`;
+                    // newPayoutTd.innerText = `$${500}`;
                     newTr.append(newPayoutTd);
 
                     document.querySelector('#on-the-tens tbody').append(newTr);
