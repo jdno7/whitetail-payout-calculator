@@ -237,18 +237,18 @@ function calcNewPayout(num, entryFee) {
         }
 
     //    desired hunter purse to dispearse prior to rounding
-       let apexHunterPurse = (num * entryFee) * .65
-        console.log("Entry Fee===", entryFee)
-        console.log("apexHunterPurse===", apexHunterPurse)
+    //    let apexHunterPurse = (num * entryFee) * .65
+    //     console.log("Entry Fee===", entryFee)
+    //     console.log("apexHunterPurse===", apexHunterPurse)
         console.log("payouts===", payouts)
     // If Entries are less than 20, the top Ten Purse gets all of the apexHunter Purse 
-       let topTenPurse = 0  
-        if (num > 19){
-            topTenPurse += apexHunterPurse * .45
-        }else {
-            apexHunterPurse = num * entryFee
-            topTenPurse += apexHunterPurse
-        }
+    //    let topTenPurse = 0  
+    //     if (num > 19){
+    //         topTenPurse += apexHunterPurse * .45
+    //     }else {
+    //         apexHunterPurse = num * entryFee
+    //         topTenPurse += apexHunterPurse
+    //     }
 
        
         const topTenPayouts = [
@@ -297,38 +297,35 @@ function calcNewPayout(num, entryFee) {
 
         // Calculating the TOP PLACE PAYOUTS
         let topPlaces = Math.floor(num / 10)
+        // Minimum Payouts is 3
         if (topPlaces < 3) topPlaces = 3
         if (topPlaces > 10) topPlaces = 10
-        // payouts for the top half of the top scoring hunters
-        // const topHalfPayout = topTenPurse / topPlaces * 1.125
-        // payout amount for the bottom half of the top scoring hunters
-        // const bottomHalfPayout = topTenPurse / topPlaces * .875
 
         // Top Places templates based on payouts and assign payouts accordingly
         
             if (topPlaces === 10 && num >= 500) {
-                payouts["1st"] = Math.max(roundTwoFidy(num * 6), entryFee * 2)
-                payouts["2nd"] = Math.max(roundTwoFidy(num * 5), entryFee * 2)
-                payouts["3rd"] = Math.max(roundTwoFidy(num * 4), entryFee * 2)
-                payouts["4th"] = Math.max(roundTwoFidy(num * 3.5), entryFee * 2)
-                payouts["5th"] = Math.max(roundTwoFidy(num * 2), entryFee * 2)
-                payouts["6th"] = Math.max(roundToNearestHundred(num * 1.6), entryFee * 2)
-                payouts["7th"] = Math.max(roundToNearestHundred(num * 1.6 - (entryFee *1)), entryFee * 2)
-                payouts["8th"] = Math.max(roundToNearestHundred(num * 1.6 - (entryFee *2)), entryFee * 2)
-                payouts["9th"] = Math.max(roundToNearestHundred(num * 1.6 - (entryFee *3)), entryFee * 2)
-                payouts["10th"] = Math.max(roundToNearestHundred(num * 1.6 - (entryFee *4)), entryFee * 2)
+                payouts["1st"] = Math.max(roundTwoFidy(num * 6), entryFee * 3)
+                payouts["2nd"] = Math.max(roundTwoFidy(num * 5), entryFee * 3)
+                payouts["3rd"] = Math.max(roundTwoFidy(num * 4), entryFee * 3)
+                payouts["4th"] = Math.max(roundTwoFidy(num * 3.5), entryFee * 3)
+                payouts["5th"] = Math.max(roundTwoFidy(num * 2), entryFee * 3)
+                payouts["6th"] = Math.max(roundToNearestHundred(num * 1.6), entryFee * 3)
+                payouts["7th"] = Math.max(roundToNearestHundred(num * 1.6 - (entryFee *1)), entryFee * 3)
+                payouts["8th"] = Math.max(roundToNearestHundred(num * 1.6 - (entryFee *2)), entryFee * 3)
+                payouts["9th"] = Math.max(roundToNearestHundred(num * 1.6 - (entryFee *3)), entryFee * 3)
+                payouts["10th"] = Math.max(roundToNearestHundred(num * 1.6 - (entryFee *4)), entryFee * 3)
             } 
             else if ( num < 500 ) {
                 payouts["1st"] = Math.max(roundTwoFidy(num * 6), entryFee*5)
                 payouts["2nd"] = Math.max(roundTwoFidy(num * 5), entryFee*5)
-                payouts["3rd"] = Math.max(roundToNearestHundred(num * 4), entryFee * 3.5)
-                payouts["4th"] = Math.max(roundToNearestHundred(num * 3.5), entryFee * 3.5)
-                payouts["5th"] = Math.max(roundToNearestHundred(num * 3), entryFee * 3)
-                payouts["6th"] = Math.max(roundToNearestFiddy(num * 3 - (entryFee *1)), entryFee * 3)
-                payouts["7th"] = Math.max(roundToNearestFiddy(num * 3 - (entryFee *2)), entryFee * 2.5)
-                payouts["8th"] = Math.max(roundToNearestFiddy(num * 3 - (entryFee *3)), entryFee * 2.5)
-                payouts["9th"] = Math.max(roundToNearestFiddy(num * 3 - (entryFee *4)), entryFee * 2.5)
-                payouts["10th"] = Math.max(roundToNearestFiddy(num * 3 - (entryFee *5)), entryFee * 2.5)
+                payouts["3rd"] = Math.max(roundToNearestHundred(num * 4), entryFee * 4)
+                payouts["4th"] = Math.max(roundToNearestHundred(num * 3.5), entryFee * 4)
+                payouts["5th"] = Math.max(roundToNearestHundred(num * 3), entryFee * 3.5)
+                payouts["6th"] = Math.max(roundToNearestFiddy(num * 3 - (entryFee *1)), entryFee * 3.5)
+                payouts["7th"] = Math.max(roundToNearestFiddy(num * 3 - (entryFee *2)), entryFee * 3.25)
+                payouts["8th"] = Math.max(roundToNearestFiddy(num * 3 - (entryFee *3)), entryFee * 3.25)
+                payouts["9th"] = Math.max(roundToNearestFiddy(num * 3 - (entryFee *4)), entryFee * 3)
+                payouts["10th"] = Math.max(roundToNearestFiddy(num * 3 - (entryFee *5)), entryFee * 3)
 
                 if (topPlaces < 10) {
                     const nonPaidNumber = 10 - topPlaces
@@ -348,7 +345,7 @@ function calcNewPayout(num, entryFee) {
                     }
                 }
             }
-        // use this number to define the number of Payouts outside the top ten starting at 200 entries
+        // use this number to define the number of Payouts outside the top ten starting at 100 entries adding adiitional places for every 200 entries
         let outsideTopTen
         if (num > 99) outsideTopTen = Math.floor((num / 200) +1)
         // If Payout Model is 100 or Greater evaluate outside Top Ten Payouts
@@ -359,11 +356,11 @@ function calcNewPayout(num, entryFee) {
                     // console.log('in i===0', roundToNearestHundred(num * 2), 'payouts.11th-15th ===', payouts["11th-15th"])
                     // console.log('outsidePayouts[i]===', outsideTopTenPayouts[i])
                     // for every set of places other than 11th-15th remove $125 from the product of num(entries)* .6 with the minumum value at $250
-                    payouts[outsideTopTenPayouts[i]] = Math.min(Math.max(roundToNearestHundred(num * .5), entryFee * 2), 1500)
+                    payouts[outsideTopTenPayouts[i]] = Math.min(Math.max(roundToNearestHundred(num * .5), entryFee * 3), 1500)
                     // console.log('in i===0', roundToNearestHundred(num * 2), 'payouts.11th-15th ===', payouts["11th-15th"])
                 }else {
                      // for every set of places other than 11th-15th remove $125 from the product of num(entries)* .6 with the minumum value at $250
-                payouts[outsideTopTenPayouts[i]] = Math.max(Math.min(Math.max(roundToNearestHundred(num * .5), entryFee * 2), 1500) - i * entryFee, entryFee * 2 )
+                payouts[outsideTopTenPayouts[i]] = Math.max(Math.min(Math.max(roundToNearestHundred(num * .5), entryFee * 3), 1500) - i * entryFee, entryFee * 3 )
                 }
             }
             // Deep payouts go over 180th and add money to the payout numbers and Im too lazy to fix it
@@ -374,38 +371,38 @@ function calcNewPayout(num, entryFee) {
         
         // Special Harvest Payouts
         if (num > 39) {
-            payouts["10PT Drawing"] = Math.max(roundToNearestHundred(Math.min(num * 4, 8000)), entryFee*2.5)
-            payouts["9PT Drawing"] = Math.max(roundToNearestHundred(Math.min(num * 4, 8000)), entryFee*2.5)
-            payouts["8PT Drawing"] = Math.max(roundToNearestHundred(Math.min(num * 3, 6000)), entryFee*2.5)
-            payouts["7PT Drawing"] = Math.max(roundToNearestHundred(Math.min(num * 3, 6000)), entryFee*2.5)
+            payouts["10PT Drawing"] = Math.max(roundToNearestHundred(Math.min(num * 4, 8000)), entryFee*3)
+            payouts["9PT Drawing"] = Math.max(roundToNearestHundred(Math.min(num * 4, 8000)), entryFee*3)
+            payouts["8PT Drawing"] = Math.max(roundToNearestHundred(Math.min(num * 3, 6000)), entryFee*3)
+            payouts["7PT Drawing"] = Math.max(roundToNearestHundred(Math.min(num * 3, 6000)), entryFee*3)
         }
 
         if (num >= 300) {
-            payouts["100th"] = Math.min(num * 2, 3000)
+            payouts["100th"] = roundToNearestFiddy(Math.min(num * 2, 3000))
         }
         if (num >= 500) {
-            payouts["200th"] = Math.min(num * 2, 3000)
+            payouts["200th"] = roundToNearestFiddy(Math.min(num * 2, 3000))
         }
         if (num >= 800) {
-            payouts["300th"] = Math.min(num * .5, 1500)
+            payouts["300th"] = roundToNearestFiddy(Math.min(num * .6, 1500))
         }
         if (num >= 1000) {
-            payouts["400th"] = Math.min(num * .5, 1500)
+            payouts["400th"] = roundToNearestFiddy(Math.min(num * .6, 1500))
         }
         if (num >= 1200) {
-            payouts["500th"] = Math.min(num * .5, 1500)
+            payouts["500th"] = roundToNearestFiddy(Math.min(num * .6, 1500))
         }
         if (num >= 1750) {
-            payouts["750th"] = Math.min(num * .5, 1500)
+            payouts["750th"] = roundToNearestFiddy(Math.min(num * .6, 1500))
         }
         // if (num >= 1250) {
         //     payouts["750th"] = Math.min(num * .5, 1500)
         // }
         if (num >= 2000) {
-            payouts["1000th"] = Math.min(num * .5, 1500)
+            payouts["1000th"] = roundToNearestFiddy(Math.min(num * .6, 1500))
         }
         if (num >= 2500) {
-            payouts["1250th"] = Math.min(num * .5, 1500)
+            payouts["1250th"] = roundToNearestFiddy(Math.min(num * .6, 1500))
         }
 
         // Sum up all payouts in the 'payouts' object and calculate other payout info
