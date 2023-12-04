@@ -69,6 +69,7 @@ const payouts = {
     '7th': 0,
     '8th': 0,
     '9th': 0,
+    '10th': 0,
     '11th-15th': 0,
     '16th-20th': 0,
     '21st-25th': 0,
@@ -149,6 +150,14 @@ function roundToNearestHundred(num){
 }
 function roundToNearestFiddy(num){
     num = num - num%50
+    return num
+}
+function roundTwentyFive(num){
+    num = num - num%25
+    return num
+}
+function roundToTen(num){
+    num = num - num%5
     return num
 }
 
@@ -345,6 +354,31 @@ function calcNewPayout(num, entryFee) {
                     }
                 }
             }
+
+        // check to make sure top scores aren't the same after rounding
+        const checkPayouts = ['1st','2nd','3rd','4th','5th','6th','7th','8th','9th','10th'].slice(0,topPlaces);
+        console.log(checkPayouts)
+        for (let i = 0; i < topPlaces - 1; i++) {
+            // console.log(payouts[checkPayouts[i]])
+            // console.log(payouts[checkPayouts[i+1]])
+            console.log(i)
+            console.log(checkPayouts[i])
+            if (i+2 <= topPlaces - 1) {
+                console.log(checkPayouts[i], checkPayouts[i+1], checkPayouts[i+2])
+                if (payouts[checkPayouts[i]] === payouts[checkPayouts[i+1]]) {
+                    payouts[checkPayouts[i+1]] = roundTwentyFive((payouts[checkPayouts[i]] + payouts[checkPayouts[i+1]] + payouts[checkPayouts[i+2]]) / 3);
+                }
+            }      
+        }
+
+        for (let i = 0; i < topPlaces - 1; i++) {
+            if (payouts[checkPayouts[i]] === payouts[checkPayouts[i+1]]) {
+                payouts[checkPayouts[i]] += roundToTen((payouts[checkPayouts[i-1]] - payouts[checkPayouts[i]]) / 2);
+            }
+        }
+         
+
+
         // use this number to define the number of Payouts outside the top ten starting at 100 entries adding adiitional places for every 200 entries
         let outsideTopTen
         if (num > 99) outsideTopTen = Math.floor((num / 200) +1)
