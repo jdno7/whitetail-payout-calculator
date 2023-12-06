@@ -357,20 +357,14 @@ function calcNewPayout(num, entryFee) {
 
         // check to make sure top scores aren't the same after rounding
         const checkPayouts = ['1st','2nd','3rd','4th','5th','6th','7th','8th','9th','10th'].slice(0,topPlaces);
-        console.log(checkPayouts)
         for (let i = 0; i < topPlaces - 1; i++) {
-            // console.log(payouts[checkPayouts[i]])
-            // console.log(payouts[checkPayouts[i+1]])
-            console.log(i)
-            console.log(checkPayouts[i])
             if (i+2 <= topPlaces - 1) {
-                console.log(checkPayouts[i], checkPayouts[i+1], checkPayouts[i+2])
                 if (payouts[checkPayouts[i]] === payouts[checkPayouts[i+1]]) {
                     payouts[checkPayouts[i+1]] = roundTwentyFive((payouts[checkPayouts[i]] + payouts[checkPayouts[i+1]] + payouts[checkPayouts[i+2]]) / 3);
                 }
             }      
         }
-
+        // second loop to refine similar top payouts
         for (let i = 0; i < topPlaces - 1; i++) {
             if (payouts[checkPayouts[i]] === payouts[checkPayouts[i+1]]) {
                 payouts[checkPayouts[i]] += roundToTen((payouts[checkPayouts[i-1]] - payouts[checkPayouts[i]]) / 2);
