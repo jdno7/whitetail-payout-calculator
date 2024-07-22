@@ -331,10 +331,12 @@ function calcNewPayout(num, entryFee) {
                 payouts["4th"] = Math.max(roundToNearestHundred(num * 3.5), entryFee * 4)
                 payouts["5th"] = Math.max(roundToNearestHundred(num * 3), entryFee * 3.5)
                 payouts["6th"] = Math.max(roundToNearestFiddy(num * 3 - (entryFee *1)), entryFee * 3.5)
-                payouts["7th"] = Math.max(roundToNearestFiddy(num * 3 - (entryFee *2)), entryFee * 3.25)
-                payouts["8th"] = Math.max(roundToNearestFiddy(num * 3 - (entryFee *3)), entryFee * 3.25)
-                payouts["9th"] = Math.max(roundToNearestFiddy(num * 3 - (entryFee *4)), entryFee * 3)
-                payouts["10th"] = Math.max(roundToNearestFiddy(num * 3 - (entryFee *5)), entryFee * 3)
+                // Updated JD 07/22/2024 - Added Rounding to the second numbers in the Math.max comparison.
+                // 7th and 8th are rounding to the neareast 50 and 9th and 10th are rounding to the nearest 25
+                payouts["7th"] = Math.max(roundToNearestFiddy(num * 3 - (entryFee *2)), roundToNearestFiddy(entryFee * 3.25))
+                payouts["8th"] = Math.max(roundToNearestFiddy(num * 3 - (entryFee *3)), roundToNearestFiddy(entryFee * 3.25))
+                payouts["9th"] = Math.max(roundToNearestFiddy(num * 3 - (entryFee *4)), roundTwentyFive(entryFee * 3))
+                payouts["10th"] = Math.max(roundToNearestFiddy(num * 3 - (entryFee *5)), roundTwentyFive(entryFee * 3))
 
                 if (topPlaces < 10) {
                     const nonPaidNumber = 10 - topPlaces
@@ -343,7 +345,29 @@ function calcNewPayout(num, entryFee) {
                         payouts[p] = 0
                     }
                 }
-            } else {
+            } 
+            // else if ( num < 200 ) {
+            //     payouts["1st"] = Math.max(roundToNearestHundred(num * 6), entryFee*5)
+            //     payouts["2nd"] = Math.max(roundToNearestHundred(num * 5), entryFee*4.75)
+            //     payouts["3rd"] = Math.max(roundToNearestHundred(num * 4), entryFee * 4.5)
+            //     payouts["4th"] = Math.max(roundToNearestHundred(num * 3.5), entryFee * 4.25)
+            //     payouts["5th"] = Math.max(roundToNearestHundred(num * 3), entryFee * 4)
+            //     payouts["6th"] = Math.max(roundToNearestFiddy(num * 3 - (entryFee *1)), entryFee * 3.75)
+            //     payouts["7th"] = Math.max(roundToNearestFiddy(num * 3 - (entryFee *2)), entryFee * 3.5)
+            //     payouts["8th"] = Math.max(roundToNearestFiddy(num * 3 - (entryFee *3)), entryFee * 3.35)
+            //     payouts["9th"] = Math.max(roundToNearestFiddy(num * 3 - (entryFee *4)), entryFee * 3.2)
+            //     payouts["10th"] = Math.max(roundToNearestFiddy(num * 3 - (entryFee *5)), entryFee * 3)
+
+            //     if (topPlaces < 10) {
+            //         const nonPaidNumber = 10 - topPlaces
+            //         const changePayoutsToZeroArr = topTenPayouts.slice(-nonPaidNumber)
+            //         for (let p of changePayoutsToZeroArr) {
+            //             payouts[p] = 0
+            //         }
+            //     }
+            // } 
+            
+            else {
                   // if less than 100 entries keep the template above for the base payouts but 
                 // only pay 1 place per 10 entries (minimum of 3) and mark the non paid places to 0 in the payouts object
                 if (topPlaces < 10) {
